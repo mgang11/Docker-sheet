@@ -1,6 +1,11 @@
 ### List images
 ```
 docker images
+Tag Image: docker image tag <source_Image_name> <dest_Image_name:tag>
+
+Push Image: docker image push <image_Name>
+
+Cleanup unused Volumes: docker image prune
 ```
 ### List images with size 
 ```
@@ -37,6 +42,54 @@ docker exec -t -i <container id> /bin/bash
 ### To get an ip 
 ```
 docker inspect <id> | grep IPAddr
+
+Containers
+
+List all Containers: docker container ls
+
+Start a new Container: docker container run <image_name>
+
+docker run <image_name>
+
+Start a new container interactively: docker container run -it <image_name> <command>
+
+Run additional command in existing container: docker container exec -it <container_name> <command>
+
+Stop a single container: docker container stop <container_id>
+
+Stop multiple containers: docker container stop <container_id1> <container_id2> <container_id3> ...
+
+Stop / Remove all Containers: docker stop $(docker ps -a -q)
+
+Container Logs: docker container logs <container_id>
+
+Container Config: docker container inspect <container_id>
+
+Performance stats for one container: docker container stats <container_name>
+
+Performance stats for all containers: docker container stats
+
+Delete all containers: docker rm $(docker ps -a -q)
+
+ 
+---
+### Networks
+
+List all Docker Networks: docker network ls
+
+Inspect Network: docker network inspect <network_id>
+
+### Volumes
+
+List all Volumes: docker volume ls
+
+Remove volume: docker volume rm
+
+Cleanup unused Volumes: docker volume prune
+
+Additional Commands:
+
+Force Removal: --force, -f
 ```
 ### To login into docker container 
 ```
