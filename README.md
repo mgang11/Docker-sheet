@@ -235,3 +235,35 @@ eval "$(docker-machine env <machine name>)"
 ```
 docker-machine create --driver generic --generic-ip-address <ip> --generic-ssh-user <username> --generic-ssh-key <key-location> <machine name>
 ```
+
+https://github.com/SummitRoute/aws_managed_policies
+
+aws iam list-policies > list-policies.json
+cat list-policies.json | jq -cr '.Policies[] | select(.Arn | contains("iam::aws"))|.Arn +" "+ .DefaultVersionId+" "+.PolicyName' | xargs -n3 sh -c 'aws iam get-policy-version --policy-arn $1 --version-id $2 > "policies/$3"' sh
+
+https://github.com/powerof-s/AWS-List-EC2-RDS/blob/master/ListECandRDS%20copy.sh
+
+aws sso login --profile <profilename>
+echo "######## LISTING EC2 INSTANCES################"
+
+for region in `aws ec2 describe-regions --all-regions --query "Regions[].{Name:RegionName}" --output text --profile <profilename>`
+do
+     echo -e "\nListing Instances in region:'$region'..."
+#aws ec2 describe-instances --region $region
+aws ec2 describe-instances --region $region  --query 'Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name, InstanceId]' --output text --profile <profilename> | grep -E '(running|pending)'
+done
+
+echo "######## END OF LISTING EC2 INSTANCES##########"
+
+echo "####### LISTING RDS INSTANCES##################"
+
+for region in `aws ec2 describe-regions --all-regions --query "Regions[].{Name:RegionName}" --output text --profile <profilename>`
+do
+     echo -e "\nListing Instances in region:'$region'..."
+aws rds describe-db-instances --region $region --profile <profilename>
+#aws ec2 describe-instances --region $region
+done
+
+echo "####### END OF LISTING RDS INSTANCES###########"
+
+
